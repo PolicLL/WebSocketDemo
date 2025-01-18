@@ -1,24 +1,13 @@
 const stompClient = new StompJs.Client({
-    brokerURL: 'ws://localhost:8080/gs-guide-websocket',
-    connectHeaders: {
-        username: "user1" // Replace with actual username
-    }
+    brokerURL: 'ws://localhost:8080/gs-guide-websocket'
 });
 
 stompClient.onConnect = (frame) => {
     setConnected(true);
     console.log('Connected: ' + frame);
-
-    // Subscribe to public messages
     stompClient.subscribe('/topic/greetings', (greeting) => {
         showGreeting(JSON.parse(greeting.body).content);
     });
-
-    // Subscribe to private messages
-//    stompClient.subscribe('/user/queue/reply', (message) => {
-//        console.log("Private message: " + message.body);
-//        alert("Private message received: " + message.body); // Optional: Notify user with an alert
-//    });
 };
 
 stompClient.onWebSocketError = (error) => {
